@@ -1,4 +1,4 @@
 # Exercise-repo
-Repo for exercise :-)
+Repo for exercise :-) :)
 
 Some changes...
