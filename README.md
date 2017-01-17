@@ -1,3 +1,3 @@
-Repo for exercise :-) :( :3 kkk
+Repo for exercise :-) :( :3 kk
 
-Some changes... Trolololo
+Some changes... Trololololo
