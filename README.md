@@ -1,2 +1,2 @@
-This is a repository for exercise materials.
+This is a repository for many exercise materials.
 bla
