@@ -1,9 +1,10 @@
 package StreamsFilesAndDirectories.Lab;
 
 import java.io.File;
+import java.util.ArrayDeque;
 
 public class NestedFolders {
-    public static int foldersCount = 1;
+//    public static int foldersCount = 0;
 
     public static void main(String[] args) {
 
@@ -11,21 +12,36 @@ public class NestedFolders {
 
         File file = new File(fileName);
 
-        dfs(file);
+//        dfs(file);
 
-        System.out.println(foldersCount + " folders");
-    }
+        ArrayDeque<File> files = new ArrayDeque<>();
+        files.offer(file);
+        int count = 0;
+        while (!files.isEmpty()) {
+            File currentDir = files.poll();
+            File[] nestedFiles = currentDir.listFiles();
 
-    public static void dfs(File file){
-        // Bottom-case
-        // Step
-        foldersCount++;
-        for (File f : file.listFiles()) {
-            if (f.isDirectory()){
-                dfs(f);
-            }
+            for (File nestedFile : nestedFiles)
+                if (nestedFile.isDirectory())
+                    files.offer(nestedFile);
+            count++;
+            System.out.println(currentDir.getName());
+
+
         }
 
-        System.out.println(file.getName());
+        System.out.println(count + " folders");
     }
+
+//    public static void dfs(File file){
+//        // Bottom-case
+//        // Step
+//        foldersCount++;
+//        System.out.println(file.getName());
+//        for (File f : file.listFiles()) {
+//            if (f.isDirectory()){
+//                dfs(f);
+//            }
+//        }
+//    }
 }
