@@ -15,7 +15,6 @@ public class StringMatrixRotation {
         char[][] rotatedMatrix = rotateMatrix(rotationDegrees, matrix);
         printMatrix(rotatedMatrix);
 
-
     }
 
     private static char[][] rotateMatrix(int rotationDegrees, char[][] matrix) {
