@@ -1,6 +1,8 @@
 package MultidimensionalArrays.Exercise;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Crossfire {
@@ -9,8 +11,7 @@ public class Crossfire {
         Scanner scanner = new Scanner(System.in);
 
         String[][] matrix = buildMatrix(scanner);
-        String[][] nukedMatrix = nukeMatrix(matrix, scanner);
-        printMatrix(nukedMatrix);
+        printMatrix(nukeMatrix(matrix, scanner));
 
 
     }
@@ -19,7 +20,7 @@ public class Crossfire {
         return row >= 0 && col >= 0 && row < chamber.length && col < chamber[row].length;
     }
 
-    private static String[][] nukeMatrix(String[][] matrix, Scanner scanner) {
+    private static String[][] nukeMatrix(String[][] matrix, Scanner scanner){
         String command;
         while (!"Nuke it from orbit".equals(command = scanner.nextLine())) {
             int[] tokens = getTokens(command);
@@ -27,61 +28,40 @@ public class Crossfire {
             int colOfImpact = tokens[1];
             int radius = tokens[2];
 
+            removeElements(matrix, rowOfImpact, colOfImpact, radius);
 
-            //delete top
-            if (rowOfImpact != 0) {
-                for (int row = rowOfImpact - 1; row >= rowOfImpact - radius; row--) {
-                    if (isValid(row, colOfImpact, matrix)) {
-                        matrix[row][colOfImpact] = ",";
-                        String temp = String.join(" ", matrix[row]).replace(",", "");
-                        matrix[row] = temp.split("\\s+");
-                    }
-                }
-            }
+            matrix = Arrays.stream(matrix).filter(r -> Arrays.stream(r).count() != 0).toArray(String[][]::new);
 
-            //delete right
-
-                for (int col = colOfImpact + 1; col <= colOfImpact + radius; col++) {
-                    if (isValid(rowOfImpact, col, matrix)) {
-                        matrix[rowOfImpact][col] = ",";
-                        String temp = String.join(" ", matrix[rowOfImpact]).replace(",", "");
-                        matrix[rowOfImpact] = temp.split("\\s+");
-                    }
-                }
-
-            //delete bottom
-
-
-                for (int row = rowOfImpact + 1; row <= rowOfImpact + radius; row++) {
-                    if (isValid(row, colOfImpact, matrix)) {
-                        matrix[row][colOfImpact] = ",";
-                        String temp = String.join(" ", matrix[row]).replace(",", "");
-                        matrix[row] = temp.split("\\s+");
-                    }
-                }
-
-
-            //delete left
-
-            if (colOfImpact != 0) {
-                for (int col = colOfImpact; col >= colOfImpact - radius; col--) {
-                    if (isValid(rowOfImpact, col, matrix)) {
-                        matrix[rowOfImpact][col] = ",";
-                        String temp = String.join(" ", matrix[rowOfImpact]).replace(",", "");
-                        matrix[rowOfImpact] = temp.split("\\s+");
-                    }
-                }
-            }
         }
         return matrix;
     }
 
-    private static void printMatrix(String[][] matrix) {
-        for (int row = 0; row < matrix.length; row++) {
-            for (int col = 0; col < matrix[row].length; col++) {
-                System.out.printf("%s ", matrix[row][col]);
+    private static void removeElements(String[][] matrix, int rowOfImpact, int colOfImpact, int radius) {
+
+        //delete from bottom
+
+        for (int row = rowOfImpact + radius; row >= rowOfImpact - radius; row--) {
+            if (isValid(row, colOfImpact, matrix) && row != rowOfImpact) {
+                matrix[row][colOfImpact] = null;
             }
-            System.out.println();
+        }
+
+        //delete from right
+
+        for (int col = colOfImpact + radius; col >= colOfImpact - radius; col--) {
+            if (isValid(rowOfImpact, col, matrix)) {
+                matrix[rowOfImpact][col] = null;
+            }
+        }
+
+        for (int r = 0; r < matrix.length; r++) {
+            matrix[r] = Arrays.stream(matrix[r]).filter(Objects::nonNull).toArray(String[]::new);
+        }
+    }
+
+    private static void printMatrix(String[][] matrix) {
+        for (String[] row : matrix) {
+            System.out.println(String.join(" ", row));
         }
     }
 
@@ -93,16 +73,11 @@ public class Crossfire {
 
         String[][] matrix = new String[rows][cols];
 
-        int counter = 0;
+        int counter = 1;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                if (counter > 0) {
-                    matrix[row][col] = String.format("%d", (counter * cols) + col + 1);
-                } else {
-                    matrix[row][col] = String.format("%d", col + 1);
-                }
+                matrix[row][col] = String.format("%d", counter++);
             }
-            counter++;
         }
 
         return matrix;
