@@ -1,4 +1,4 @@
-package Scale;
+package Generics.Lab.Scale;
 
 public class Scale<T extends Comparable<T>> {
     private T left;

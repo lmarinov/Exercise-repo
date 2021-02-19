@@ -1,4 +1,4 @@
-package Jar;
+package Generics.Lab.Jar;
 
 import java.util.ArrayDeque;
 

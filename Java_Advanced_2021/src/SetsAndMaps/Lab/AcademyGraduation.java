@@ -1,6 +1,5 @@
 package SetsAndMaps.Lab;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class AcademyGraduation {
@@ -8,7 +7,7 @@ public class AcademyGraduation {
 
         Scanner scanner = new Scanner(System.in);
         int n = Integer.parseInt(scanner.nextLine());
-        Map<String, double[]> studentWithGrades = new TreeMap<>();
+        Map<String, Double> studentWithGrades = new TreeMap<>();
 
         while (n-- > 0){
             String name = scanner.nextLine();
@@ -16,27 +15,20 @@ public class AcademyGraduation {
                     .mapToDouble(Double::parseDouble)
                     .toArray();
 
-            studentWithGrades.put(name, grades);
+            double averageGrade;
+            double sum = 0.0;
+
+            for (double grade : grades) {
+                sum += grade;
+            }
+
+            averageGrade = sum / grades.length;
+
+            studentWithGrades.put(name, averageGrade);
         }
 
-        DecimalFormat df = new DecimalFormat("###.####");
-
         studentWithGrades.forEach((k,v) -> {
-            System.out.printf("%s is graduated with %s%n", k, fmt(Arrays.stream(v).average().orElse(0)));
+            System.out.printf("%s is graduated with %s%n", k, v);
         });
-    }
-
-    public static String fmt(double d)
-
-    {
-
-        if(d == (long) d)
-
-            return String.format("%d",(long)d);
-
-        else
-
-            return String.format("%s",d);
-
     }
 }
