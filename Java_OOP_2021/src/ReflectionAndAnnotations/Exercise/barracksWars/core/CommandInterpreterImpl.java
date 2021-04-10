@@ -25,7 +25,8 @@ public class CommandInterpreterImpl implements CommandInterpreter {
         try {
             Class<?> clazz = Class.forName(COMMANDS_PATH + commandName);
             Constructor<?> declaredConstructor = clazz.getDeclaredConstructor(String[].class);
-            command = (Executable) declaredConstructor.newInstance(data);
+            Object[] objectData = new Object[]{data};
+            command = (Executable) declaredConstructor.newInstance(objectData);
 
             Field[] executableFields = command.getClass().getDeclaredFields();
             Field[] localFields = this.getClass().getDeclaredFields();
